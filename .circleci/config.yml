@@ -48,6 +48,11 @@ jobs:
       - run:
           name: Install Bundler
           command: gem install bundler:2.4.22
+      - run: bundle install
+      - save_cache:
+          key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+          paths:
+            - vendor/bundle
       - run:
           name: Install nvm and Node.js 16
           command: |
