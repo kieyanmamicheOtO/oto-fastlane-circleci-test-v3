@@ -1,25 +1,31 @@
 version: 2.1
-
 jobs:
   node:
     working_directory: ~/oto-fastlane-circleci-test-v3
     docker:
       - image: circleci/node:16
+    #Test3- SERVERS ARE DOWN OKEASE ADASDASD
     steps:
       - checkout
+
       - restore_cache:
           key: npm-v1-{{ checksum "package-lock.json" }}-{{ arch }}
+
       - restore_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
+
       - run: npm install
+
       - save_cache:
           key: npm-v1-{{ checksum "package-lock.json" }}-{{ arch }}
           paths:
             - ~/.cache/npm
+
       - save_cache:
           key: node-v1-{{ checksum "package.json" }}-{{ arch }}
           paths:
             - node_modules
+
       - run:
           name: jest tests
           command: |
@@ -27,32 +33,46 @@ jobs:
             npm run test
           environment:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
+
       - persist_to_workspace:
           root: ~/oto-fastlane-circleci-test-v3
           paths:
             - node_modules
+
       - store_test_results:
           path: test-results
+
       - store_artifacts:
           path: test-results
 
   android-build-and-test:
+    working_directory: ~/oto-fastlane-circleci-test-v3/android
     docker:
       - image: circleci/android:api-29-node
+      #- image: circleci/node:16
     steps:
-      - checkout
+      - checkout:
+          path: ~/oto-fastlane-circleci-test-v3
+
       - attach_workspace:
           at: ~/oto-fastlane-circleci-test-v3
+
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
+
       - run:
           name: Install Bundler
           command: gem install bundler:2.4.22
+
+      # - pre:
+
       - run: bundle install
+
       - save_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
           paths:
             - vendor/bundle
+
       - run:
           name: Install nvm and Node.js 16
           command: |
@@ -60,19 +80,21 @@ jobs:
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
             nvm install 16
-      - run:
-          name: Run fastlane tests
-          command: |
             mkdir -p test-results/fastlane
             bundle exec fastlane test
             mv fastlane/report.xml test-results/fastlane
+
+      #- run:
+      #   name: fastlane tests
+      #  command: |
+
       - store_test_results:
           path: test-results
+
       - store_artifacts:
           path: test-results
 
 workflows:
-  version: 2
   node-android-ios:
     jobs:
       - node
