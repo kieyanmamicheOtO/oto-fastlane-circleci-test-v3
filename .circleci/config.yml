@@ -49,6 +49,7 @@ jobs:
     working_directory: ~/oto-fastlane-circleci-test-v2/android
     docker:
       - image: circleci/android:api-29-node
+      - image: circleci/node:16
     steps:
       - checkout:
           path: ~/oto-fastlane-circleci-test-v2
