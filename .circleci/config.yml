@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/oto-fastlane-circleci-test-v2
     docker:
       - image: circleci/node:16
-    #Test3- TADSADSSADSasadasA
+    #Test3- TADSADSSADSasadasAdsfdsfsd
     steps:
       - checkout
 
