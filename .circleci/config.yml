@@ -62,7 +62,13 @@ jobs:
 
       - run:
           name: Install Bundler
-          command: gem install bundler:2.4.22                                   s
+          command: gem install bundler:2.4.22
+
+      - run:
+          name: Use Node.js version 16
+          command: |
+            nvm install 16
+            nvm use 16
 
       - run: bundle install
 
