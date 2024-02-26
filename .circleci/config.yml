@@ -61,7 +61,7 @@ jobs:
 
       - run:
           name: Install Bundler
-          command: gem install bundler:2.5.4
+          command: gem install bundler -v '~> 2.2'
 
       - run: bundle install
 
