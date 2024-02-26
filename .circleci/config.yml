@@ -64,14 +64,7 @@ jobs:
           name: Install Bundler
           command: gem install bundler:2.4.22
 
-      - pre:
-          - run:
-              name: Install nvm and Node.js 16
-              command: |
-                curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-                export NVM_DIR="$HOME/.nvm"
-                [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-                nvm install 16
+      # - pre:
 
       - run: bundle install
 
@@ -81,11 +74,19 @@ jobs:
             - vendor/bundle
 
       - run:
-          name: fastlane tests
+          name: Install nvm and Node.js 16
           command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install 16
             mkdir -p test-results/fastlane
             bundle exec fastlane test
             mv fastlane/report.xml test-results/fastlane
+
+      #- run:
+      #   name: fastlane tests
+      #  command: |
 
       - store_test_results:
           path: test-results
