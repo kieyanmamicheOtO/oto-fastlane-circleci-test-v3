@@ -1,10 +1,10 @@
 version: 2.1
 jobs:
   node:
-    working_directory: ~/oto-fastlane-circleci-test-v2
+    working_directory: ~/oto-fastlane-circleci-test-v3
     docker:
       - image: circleci/node:16
-    #Test3- SERVERS ARE DOWN 2
+    #Test3- SERVERS ARE DOWN 3xs
     steps:
       - checkout
 
@@ -35,7 +35,7 @@ jobs:
             JEST_JUNIT_OUTPUT: test-results/jest/junit.xml
 
       - persist_to_workspace:
-          root: ~/oto-fastlane-circleci-test-v2
+          root: ~/oto-fastlane-circleci-test-v3
           paths:
             - node_modules
 
@@ -46,16 +46,16 @@ jobs:
           path: test-results
 
   android-build-and-test:
-    working_directory: ~/oto-fastlane-circleci-test-v2/android
+    working_directory: ~/oto-fastlane-circleci-test-v3/android
     docker:
       - image: circleci/android:api-29-node
       - image: circleci/node:16
     steps:
       - checkout:
-          path: ~/oto-fastlane-circleci-test-v2
+          path: ~/oto-fastlane-circleci-test-v3
 
       - attach_workspace:
-          at: ~/oto-fastlane-circleci-test-v2
+          at: ~/oto-fastlane-circleci-test-v3
 
       - restore_cache:
           key: bundle-v1-{{ checksum "Gemfile.lock" }}-{{ arch }}
