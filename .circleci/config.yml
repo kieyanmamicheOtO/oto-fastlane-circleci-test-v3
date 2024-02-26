@@ -4,7 +4,7 @@ jobs:
     working_directory: ~/oto-fastlane-circleci-test-v3
     docker:
       - image: circleci/node:16
-    #Test3- SERVERS ARE DOWN 3xs
+    #Test3- SERVERS ARE DOWN 4
     steps:
       - checkout
 
