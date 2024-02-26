@@ -65,6 +65,13 @@ jobs:
           command: gem install bundler:2.4.22
 
       - run:
+          name: Install nvm
+          command: |
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+      - run:
           name: Use Node.js version 16
           command: |
             nvm install 16
