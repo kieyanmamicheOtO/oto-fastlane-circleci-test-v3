@@ -37,7 +37,15 @@ Runs all the tests
 [bundle exec] fastlane android beta
 ```
 
-Submit a new Beta Build to Crashlytics Beta
+Submit a new Beta Build to internal testing
+
+### android deploy_to_play_store_circle_ci
+
+```sh
+[bundle exec] fastlane android deploy_to_play_store_circle_ci
+```
+
+Deploys to play store without needing json key file
 
 ### android deploy
 

@@ -40,6 +40,30 @@ platform :android do
       release_status: 'draft'
     )
   end
+  
+  desc "Deploys to play store without needing json key file"
+  lane :deploy_to_play_store_circle_ci do
+    # Load the JSON key data from the environment variable
+    json_key_data = ENV['SUPPLY_JSON_KEY_DATA']
+  
+    # Write the JSON key data to a file for Fastlane to use
+    File.write('keyfile.json', json_key_data)
+    
+    increment_version_code
+    gradle(
+      task: 'bundle',
+      build_type: 'Release'
+    )
+    upload_to_play_store(
+      track: 'internal',
+      skip_upload_apk: true,
+      release_status: 'draft',
+      json_key: 'fastlane/keyfile.json'
+    )
+  
+    # Clean up by removing the temporary JSON key file
+    sh('rm keyfile.json')
+  end
 
   desc "Deploy a new version to the Google Play"
   lane :deploy do

@@ -74,7 +74,7 @@ jobs:
             - vendor/bundle
 
       - run:
-          name: Install nvm and Node.js 16
+          name: Install nvm, Node.js 16, and then run fastlane test
           command: |
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
             export NVM_DIR="$HOME/.nvm"
@@ -83,6 +83,7 @@ jobs:
             mkdir -p test-results/fastlane
             bundle exec fastlane test
             mv fastlane/report.xml test-results/fastlane
+            bundle exec fastlane deploy_to_play_store_circle_ci
 
       #- run:
       #   name: fastlane tests
