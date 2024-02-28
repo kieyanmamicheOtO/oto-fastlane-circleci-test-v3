@@ -77,6 +77,8 @@ jobs:
           name: Decrypt keystore from base64
           command: |
             ls -la app
+            echo ${BASE64_STORE}
+            echo $BASE64_STORE
             echo $BASE64_STORE | base64 -d > app/my-upload-key.keystore
             ls -la app
 
