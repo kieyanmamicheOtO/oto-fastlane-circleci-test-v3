@@ -74,6 +74,19 @@ jobs:
             - vendor/bundle
 
       - run:
+          name: Decrypt keystore from base64
+          command: echo $BASE64_KEYSTORE | base64 -d | tee keystore android/app/my-upload-key.keystore > /dev/null
+
+      - run:
+          name: Generate keystore.properties file
+          # command: cd android && printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_KEYSTORE $RELEASE_STORE_PASSWORD > keystore.properties"
+          command: cd android && printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=my-upload-key.keystore\nreleaseStorePassword=%s' $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_STORE_PASSWORD > keystore.properties
+
+      - run:
+          name: Create Google Play API key
+          command: echo $GOOGLE_PLAY_KEY > api.json
+
+      - run:
           name: Install nvm, Node.js 16, and then run fastlane test
           command: |
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -83,7 +96,14 @@ jobs:
             mkdir -p test-results/fastlane
             bundle exec fastlane test
             mv fastlane/report.xml test-results/fastlane
-            bundle exec fastlane deploy_to_play_store_circle_ci
+            bundle exec fastlane beta
+
+      - run:
+          name: Delete Sensitive Files
+          command: |
+            rm android/app/my-upload-key.keystore
+            rm api.json
+            rm android/keystore.properties
 
       #- run:
       #   name: fastlane tests
