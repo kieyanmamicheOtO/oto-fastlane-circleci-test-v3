@@ -75,7 +75,9 @@ jobs:
 
       - run:
           name: Decrypt keystore from base64
-          command: echo $BASE64_STORE | base64 -d > android/app/my-upload-key.keystore
+          command: |
+            pwd
+            echo $BASE64_STORE | base64 -d > android/app/my-upload-key.keystore
 
       - run:
           name: Generate keystore.properties file
