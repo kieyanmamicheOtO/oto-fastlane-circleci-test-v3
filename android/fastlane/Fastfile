@@ -45,10 +45,26 @@ platform :android do
   lane :deploy_to_play_store_circle_ci do
     
     increment_version_code
+    
+    # Decode keystore and store it in a file
+    base64_keystore = ENV['BASE64_KEYSTORE']  # Retrieve the base64-encoded keystore from environment variables
+    decoded_keystore = Base64.decode64(base64_keystore)
+    File.open('decoded_keystore.keystore', 'wb') { |f| f.write(decoded_keystore) }
+    
     gradle(
       task: 'bundle',
-      build_type: 'Release'
+      build_type: 'Release',
+      properties: {
+        'storeFile': 'decoded_keystore.keystore',
+        'keyAlias': ENV['RELEASE_KEY_ALIAS'],
+        'storePassword': ENV['RELEASE_STORE_PASSWORD'],
+        'keyPassword': ENV['RELEASE_KEY_PASSWORD']
+      }
     )
+    
+    # Delete the keystore we have generated
+    sh 'rm decoded_keystore.keystore'
+    
     upload_to_play_store(
       track: 'internal',
       skip_upload_apk: true,
