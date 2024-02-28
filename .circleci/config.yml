@@ -82,7 +82,7 @@ jobs:
             ls -la app
 
       - run:
-          name: Generate keystore.properties file
+          name: Generate keystore.properties file i think fix
           command: |
             ls
             printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_KEYSTORE $RELEASE_STORE_PASSWORD > keystore.properties
