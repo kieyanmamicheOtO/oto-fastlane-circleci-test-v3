@@ -29,7 +29,7 @@ platform :android do
 
   desc "Submit a new Beta Build to internal testing"
   lane :beta do
-    increment_version_code
+    # NOTE: increment_version_code doesn't work on CircleCI
     gradle(
       task: 'bundle',
       build_type: 'Release'
