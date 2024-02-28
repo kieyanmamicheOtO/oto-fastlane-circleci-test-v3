@@ -91,7 +91,7 @@ jobs:
 
       - run:
           name: Create Google Play API key
-          command: echo $SUPPLY_JSON_KEY_DATA > api.json
+          command: echo $SUPPLY_JSON_KEY_DATA > fastlane/api.json
 
       - run:
           name: Install nvm, Node.js 16, and then run fastlane test
@@ -110,7 +110,7 @@ jobs:
           command: |
             pwd
             rm app/my-upload-key.keystore
-            rm api.json
+            rm fastlane/api.json
             rm keystore.properties
 
       #- run:
