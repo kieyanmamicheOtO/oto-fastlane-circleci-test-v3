@@ -75,19 +75,11 @@ jobs:
 
       - run:
           name: Decrypt keystore from base64
-          command: |
-            ls -la app
-            echo $BASE64_KEYSTORE
-            echo $BASE64_KEYSTORE | base64 -d > app/my-upload-key.keystore
-            ls -la app
+          command: echo $BASE64_KEYSTORE | base64 -d > app/my-upload-key.keystore
 
       - run:
-          name: Generate keystore.properties file i think fix
-          command: |
-            ls
-            printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_KEYSTORE $RELEASE_STORE_PASSWORD > keystore.properties
-            ls
-            cat keystore.properties
+          name: Generate keystore.properties
+          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_KEYSTORE $RELEASE_STORE_PASSWORD > keystore.properties
 
       - run:
           name: Create Google Play API key
@@ -108,10 +100,12 @@ jobs:
       - run:
           name: Delete Sensitive Files
           command: |
-            pwd
             rm app/my-upload-key.keystore
             rm fastlane/api.json
             rm keystore.properties
+            ls -la app
+            ls -la fastlane
+            ls -la
 
       #- run:
       #   name: fastlane tests
