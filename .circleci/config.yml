@@ -77,12 +77,12 @@ jobs:
           name: Decrypt keystore from base64
           command: |
             pwd
-            echo $BASE64_STORE | base64 -d > android/app/my-upload-key.keystore
+            echo $BASE64_STORE | base64 -d > app/my-upload-key.keystore
 
       - run:
           name: Generate keystore.properties file
           # command: cd android && printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_KEYSTORE $RELEASE_STORE_PASSWORD > keystore.properties"
-          command: cd android && printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=my-upload-key.keystore\nreleaseStorePassword=%s' $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_STORE_PASSWORD > keystore.properties
+          command: printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=my-upload-key.keystore\nreleaseStorePassword=%s' $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_STORE_PASSWORD > keystore.properties
 
       - run:
           name: Create Google Play API key
