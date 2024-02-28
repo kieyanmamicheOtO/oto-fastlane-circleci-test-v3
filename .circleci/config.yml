@@ -86,7 +86,7 @@ jobs:
           command: echo $SUPPLY_JSON_KEY_DATA > fastlane/api.json
 
       - run:
-          name: Install nvm, Node.js 16, and then run fastlane test
+          name: Install nvm, Node.js 16, and then run fastlane test and fastlane beta
           command: |
             curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
             export NVM_DIR="$HOME/.nvm"
@@ -103,13 +103,6 @@ jobs:
             rm app/my-upload-key.keystore
             rm fastlane/api.json
             rm keystore.properties
-            ls -la app
-            ls -la fastlane
-            ls -la
-
-      #- run:
-      #   name: fastlane tests
-      #  command: |
 
       - store_test_results:
           path: test-results
