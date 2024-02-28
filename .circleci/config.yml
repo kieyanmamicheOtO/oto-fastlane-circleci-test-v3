@@ -85,9 +85,9 @@ jobs:
           name: Generate keystore.properties file
           command: |
             ls
-            ls -la app
             printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' $RELEASE_KEY_ALIAS $RELEASE_KEY_PASSWORD $RELEASE_KEYSTORE $RELEASE_STORE_PASSWORD > keystore.properties
             ls
+            cat keystore.properties
 
       - run:
           name: Create Google Play API key
