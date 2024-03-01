@@ -68,7 +68,7 @@ jobs:
                   ${{ secrets.ANDROID_KEYSTORE_ALIAS }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
                   ${{ secrets.ANDROID_KEYSTORE_FILE_NAME }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \ 
                   > keystore.properties
-          echo ${{ secrets.GOOGLE_SERVICE_API_JSON }} > fastlane/api.json
+
           ls -la app
           ls -la fastlane
           ls -la
