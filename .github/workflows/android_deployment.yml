@@ -7,7 +7,7 @@ jobs:
   # -------------------------------------------------------------
   build-prod-android:
     name: Build & ship android prod app
-    runs-on: ubuntu-latest
+    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
     steps:
       # Step 1: Setup java and node
       - uses: actions/checkout@v3
