@@ -79,7 +79,6 @@ jobs:
       - name: Fastlane TEST android
         run: |
           cd android
-          cat keystore.properties | grep "releaseKeyAlias\|releaseKeyPassword\|releaseKeyStore\|releaseStorePassword"
           bundle exec fastlane test
         env:
           CI: true
