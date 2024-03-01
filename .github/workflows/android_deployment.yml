@@ -3,11 +3,11 @@ on:
   push:
     branches: ['main']
 jobs:
-  # ----------------------- ANDROID ----------------------------- TESTTTT
+  # ----------------------- ANDROID -----------------------------
   # -------------------------------------------------------------
   build-prod-android:
     name: Build & ship android prod app
-    runs-on: ${{ fromJSON('["ubuntu-latest", "self-hosted"]')[github.repository == 'github/docs-internal'] }}
+    runs-on: ubuntu-latest
     steps:
       # Step 1: Setup java and node
       - uses: actions/checkout@v3
@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 14 # using the .nvmrc file in future
+
       # Step 2: Configure gradel and gradle wrapper with cache
       - name: Cache Gradle Wrapper
         uses: actions/cache@v2
@@ -33,33 +34,72 @@ jobs:
           key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
+
       # Step 3: Install node packages
       - name: Install node modules
         run: npm install
         env:
           CI: true
+
       # Step 4: Setup ruby
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
+
       # Step 5: Install bundler, and fastlane
       - name: Install Fastlane
         run: cd android && bundle install && cd ../
         env:
           CI: true
+
       # Step 6: Install reactnative community pacakge manually
       - name: Add @react-native-community manually
         run: npm add @react-native-community/cli-platform-android@7.0.1
         env:
           CI: true
 
-      # Step 8: Fastlane build android
+      # Step 7: Decrypt keystore, generate keystore.properties, create Google Play API Key
+      - name: Decrypt keystore, generate keystore.properties, create Google Play API Key
+        run: |
+          cd android
+          echo ${{ secrets.ANDROID_KEYSTORE_FILE }} | base64 -d > app/my-upload-key.keystore
+          printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' \
+                  ${{ secrets.ANDROID_KEYSTORE_ALIAS }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
+                  ${{ secrets.ANDROID_KEYSTORE_FILE_NAME }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \ 
+                  > keystore.properties
+          echo $GOOGLE_SERVICE_API_JSON > fastlane/api.json
+        env:
+          CI: true
+
+      # Step 8: Fastlane test android
       - name: Build android App via fastlane
-        run: cd android && fastlane beta
+        run: fastlane test
         env:
           CI: true
           CD: true
-          ANDROID_KEYSTORE_FILE: ${{ secrets.ANDROID_KEYSTORE_FILE }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEYSTORE_ALIAS: ${{ secrets.ANDROID_KEYSTORE_ALIAS }}
+
+      # Step 9: Fastlane beta build android
+      - name: Build android App via fastlane
+        run: fastlane beta
+        env:
+          CI: true
+          CD: true
+
+      # Step 10: Delete Sensitive Files generated through CI/CD
+      - name: Build android App via fastlane
+        run: |
+          echo "Before removal"
+          ls -la app
+          ls -la fastlane
+          ls -la
+          rm app/my-upload-key.keystore
+          rm fastlane/api.json
+          rm keystore.properties
+          echo "After removal"
+          ls -la app
+          ls -la fastlane
+          ls -la
+        env:
+          CI: true
+          CD: true
