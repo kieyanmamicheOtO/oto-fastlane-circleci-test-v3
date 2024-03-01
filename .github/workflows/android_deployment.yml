@@ -52,12 +52,12 @@ jobs:
         env:
           CI: true
 
-      # # Step 6: Install reactnative community pacakge manually
-      # - name: Add @react-native-community manually
-      #   run: |
-      #     npm install @react-native-community/cli-platform-android
-      #   env:
-      #     CI: true
+      # Step 6: Install reactnative community pacakge manually
+      - name: Add @react-native-community manually
+        run: |
+          npm install @react-native-community/cli-platform-android@7.0.1
+        env:
+          CI: true
 
       # Step 7: Decrypt keystore, generate keystore.properties, create Google Play API Key
       - name: Decrypt keystore, generate keystore.properties, create Google Play API Key
