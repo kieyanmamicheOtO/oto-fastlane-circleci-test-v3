@@ -18,7 +18,7 @@ jobs:
       - name: Set up NODE
         uses: actions/setup-node@v3
         with:
-          node-version: 14 # using the .nvmrc file in future
+          node-version: 16 # using the .nvmrc file in future
 
       # Step 2: Configure gradel and gradle wrapper with cache
       - name: Cache Gradle Wrapper
