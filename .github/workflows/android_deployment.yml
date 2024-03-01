@@ -4,7 +4,7 @@ on:
     branches:
       - github_actions_impl
 jobs:
-  # ----------------------- ANDROID -----------------------------
+  # ----------------------- ANDROID ----------------------------- TEST
   # -------------------------------------------------------------
   build-prod-android:
     name: Build & ship android prod app
@@ -20,7 +20,7 @@ jobs:
       - name: Set up NODE
         uses: actions/setup-node@v3
         with:
-          node-version: 14  # using the .nvmrc file in future
+          node-version: 14 # using the .nvmrc file in future
       # Step 2: Configure gradel and gradle wrapper with cache
       - name: Cache Gradle Wrapper
         uses: actions/cache@v2
@@ -43,7 +43,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "2.7"
+          ruby-version: '2.7'
       # Step 5: Install bundler, and fastlane
       - name: Install Fastlane
         run: cd android && bundle install && cd ../
@@ -56,8 +56,8 @@ jobs:
           CI: true
 
       # Step 8: Fastlane build android
-      - name : Build android App via fastlane
-        run : fastlane beta
+      - name: Build android App via fastlane
+        run: fastlane beta
         env:
           CI: true
           CD: true
