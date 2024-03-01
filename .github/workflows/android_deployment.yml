@@ -101,6 +101,13 @@ jobs:
       # Step 11: Commit the updated version of the app
       - uses: actions/checkout@v3
       - run: |
+          path="android/app/build.gradle"
+          re="versionCode\\s+(\\d+)"
+          s=$(<"$path")
+          versionCode=$(echo "$s" | grep -Po "$re" | awk '{print $2}')
+          newVersion=$((versionCode + 1))
+          updatedContent=$(echo "$s" | sed "s/$re/$newVersion/")
+          echo "$updatedContent" > "$path"
           git config user.name kieyanmamicheOtO
           git config user.email kieyan.mamiche@otolawn.com
           git add android/app/build.gradle
