@@ -39,14 +39,6 @@ Runs all the tests
 
 Submit a new Beta Build to internal testing
 
-### android deploy_to_play_store_circle_ci
-
-```sh
-[bundle exec] fastlane android deploy_to_play_store_circle_ci
-```
-
-Deploys to play store without needing json key file
-
 ### android deploy
 
 ```sh
