@@ -79,8 +79,8 @@ jobs:
       - name: Build android App via fastlane
         run: |
           pwd
+          npm add @react-native-community/cli-platform-android@7.0.1
           cd android
-          pwd
           bundle exec fastlane test
         env:
           CI: true
