@@ -54,8 +54,7 @@ jobs:
 
       # Step 6: Install reactnative community pacakge manually
       - name: Add @react-native-community manually
-        run: |
-          npm install @react-native-community/cli-platform-android@7.0.1
+        run: npm install @react-native-community/cli-platform-android@7.0.1
         env:
           CI: true
 
@@ -64,10 +63,7 @@ jobs:
         run: |
           cd android
           echo ${{ secrets.ANDROID_KEYSTORE_FILE }} | base64 -d > app/my-upload-key.keystore
-          printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' \
-                  ${{ secrets.ANDROID_KEYSTORE_ALIAS }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \
-                  ${{ secrets.ANDROID_KEYSTORE_FILE_NAME }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \ 
-                  > keystore.properties
+          printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' ${{ secrets.ANDROID_KEYSTORE_ALIAS }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} ${{ secrets.ANDROID_KEYSTORE_FILE_NAME }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} > keystore.properties
           ls -la app
           ls -la fastlane
           ls -la
