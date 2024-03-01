@@ -37,7 +37,9 @@ jobs:
 
       # Step 3: Install node packages
       - name: Install node modules
-        run: npm install
+        run: |
+          npm cache clean --force
+          npm install
         env:
           CI: true
 
@@ -55,7 +57,9 @@ jobs:
 
       # Step 6: Install reactnative community pacakge manually
       - name: Add @react-native-community manually
-        run: npm install @react-native-community/cli-platform-android@7.0.1
+        run: |
+          npm install @react-native-community/cli-platform-android@7.0.1
+          npm install react-native-cli
         env:
           CI: true
 
