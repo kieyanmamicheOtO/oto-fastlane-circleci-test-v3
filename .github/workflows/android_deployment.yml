@@ -35,7 +35,7 @@ jobs:
             ${{ runner.os }}-gradle-caches-
       # Step 3: Install node packages
       - name: Install node modules
-        run: yarn install
+        run: npm install
         env:
           CI: true
       # Step 4: Setup ruby
@@ -50,7 +50,7 @@ jobs:
           CI: true
       # Step 6: Install reactnative community pacakge manually
       - name: Add @react-native-community manually
-        run: yarn add @react-native-community/cli-platform-android@7.0.1
+        run: npm add @react-native-community/cli-platform-android@7.0.1
         env:
           CI: true
 
