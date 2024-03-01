@@ -2,6 +2,8 @@ name: Create build for Android and upload to playstore - new test
 on:
   push:
     branches: ['main']
+permissions:
+  contents: write
 jobs:
   # ----------------------- ANDROID -----------------------------
   # -------------------------------------------------------------
@@ -65,9 +67,6 @@ jobs:
           echo ${{ secrets.ANDROID_KEYSTORE_FILE }} | base64 -d > app/my-upload-key.keystore
           printf 'releaseKeyAlias=%s\nreleaseKeyPassword=%s\nreleaseKeyStore=%s\nreleaseStorePassword=%s' ${{ secrets.ANDROID_KEYSTORE_ALIAS }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} ${{ secrets.ANDROID_KEYSTORE_FILE_NAME }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} > keystore.properties
           echo ${{ secrets.GOOGLE_SERVICE_API_JSON }} | base64 -d > fastlane/api.json
-          ls -la app
-          ls -la fastlane
-          ls -la
         env:
           CI: true
 
@@ -75,9 +74,6 @@ jobs:
       - name: Fastlane TEST android
         run: |
           cd android
-          pwd
-          ls -la
-          ls -la app
           bundle exec fastlane test
         env:
           CI: true
@@ -95,17 +91,18 @@ jobs:
       - name: Delete sensitive files
         run: |
           cd android
-          echo "Before removal"
-          ls -la app
-          ls -la fastlane
-          ls -la
           rm app/my-upload-key.keystore
           rm fastlane/api.json
           rm keystore.properties
-          echo "After removal"
-          ls -la app
-          ls -la fastlane
-          ls -la
         env:
           CI: true
           CD: true
+
+      # Step 11: Commit the updated version of the app
+      - uses: actions/checkout@v3
+      - run: |
+          git config user.name kieyanmamicheOtO
+          git config user.email kieyan.mamiche@otolawn.com
+          git add android/app/build.gradle
+          git commit -m "Updated build.gradle version code"
+          git push origin main
