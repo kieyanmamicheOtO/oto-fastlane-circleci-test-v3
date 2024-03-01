@@ -79,6 +79,7 @@ jobs:
         run: |
           cd android
           pwd
+          ls -la
           ls -la app
           bundle exec fastlane test
         env:
