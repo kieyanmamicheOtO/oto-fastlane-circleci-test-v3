@@ -69,12 +69,19 @@ jobs:
                   ${{ secrets.ANDROID_KEYSTORE_FILE_NAME }} ${{ secrets.ANDROID_KEYSTORE_PASSWORD }} \ 
                   > keystore.properties
           echo $GOOGLE_SERVICE_API_JSON > fastlane/api.json
+          ls -la app
+          ls -la fastlane
+          ls -la
         env:
           CI: true
 
       # Step 8: Fastlane test android
       - name: Build android App via fastlane
-        run: fastlane test
+        run: |
+          pwd
+          cd android
+          pwd
+          fastlane test
         env:
           CI: true
           CD: true
