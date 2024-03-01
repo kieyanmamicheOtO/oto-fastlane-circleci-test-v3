@@ -81,14 +81,14 @@ jobs:
           pwd
           cd android
           pwd
-          fastlane test
+          bundle exec fastlane test
         env:
           CI: true
           CD: true
 
       # Step 9: Fastlane beta build android
       - name: Build android App via fastlane
-        run: fastlane beta
+        run: bundle exec fastlane beta
         env:
           CI: true
           CD: true
