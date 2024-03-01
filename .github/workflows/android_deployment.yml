@@ -56,7 +56,7 @@ jobs:
 
       # Step 8: Fastlane build android
       - name: Build android App via fastlane
-        run: fastlane beta
+        run: cd android && fastlane beta
         env:
           CI: true
           CD: true
