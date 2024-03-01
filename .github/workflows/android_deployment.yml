@@ -37,9 +37,7 @@ jobs:
 
       # Step 3: Install node packages
       - name: Install node modules
-        run: |
-          npm cache clean --force
-          npm install
+        run: npm install
         env:
           CI: true
 
@@ -55,12 +53,12 @@ jobs:
         env:
           CI: true
 
-      # Step 6: Install reactnative community pacakge manually
-      - name: Add @react-native-community manually
-        run: |
-          npm install @react-native-community/cli-platform-android
-        env:
-          CI: true
+      # # Step 6: Install reactnative community pacakge manually
+      # - name: Add @react-native-community manually
+      #   run: |
+      #     npm install @react-native-community/cli-platform-android
+      #   env:
+      #     CI: true
 
       # Step 7: Decrypt keystore, generate keystore.properties, create Google Play API Key
       - name: Decrypt keystore, generate keystore.properties, create Google Play API Key
@@ -79,9 +77,8 @@ jobs:
           CI: true
 
       # Step 8: Fastlane test android
-      - name: Build android App via fastlane
+      - name: Fastlane TEST android
         run: |
-          npm install @react-native-community/cli-platform-android
           cd android
           bundle exec fastlane test
         env:
@@ -89,14 +86,14 @@ jobs:
           CD: true
 
       # Step 9: Fastlane beta build android
-      - name: Build android App via fastlane
+      - name: Fastlane BETA android
         run: bundle exec fastlane beta
         env:
           CI: true
           CD: true
 
       # Step 10: Delete Sensitive Files generated through CI/CD
-      - name: Build android App via fastlane
+      - name: Delete sensitive files
         run: |
           echo "Before removal"
           ls -la app
