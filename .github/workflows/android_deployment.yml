@@ -55,7 +55,7 @@ jobs:
 
       # Step 6: Install reactnative community pacakge manually
       - name: Add @react-native-community manually
-        run: npm add @react-native-community/cli-platform-android@7.0.1
+        run: npm install react-native-cli
         env:
           CI: true
 
@@ -78,8 +78,6 @@ jobs:
       # Step 8: Fastlane test android
       - name: Build android App via fastlane
         run: |
-          pwd
-          npm add @react-native-community/cli-platform-android@7.0.1
           cd android
           bundle exec fastlane test
         env:
