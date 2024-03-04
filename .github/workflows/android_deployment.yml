@@ -1,12 +1,7 @@
-name: Create build for Android and upload to playstore - new test
+name: Create build for Android and upload to Playstore
 on:
   push:
     branches: ['main']
-permissions:
-  contents: write
-jobs:
-  # ----------------------- ANDROID -----------------------------
-  # -------------------------------------------------------------
   build-prod-android:
     name: Build & ship android prod app
     runs-on: ubuntu-latest
