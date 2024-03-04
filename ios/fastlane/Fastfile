@@ -1,23 +1,37 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
+# iOS Fastfile
 default_platform(:ios)
 
+
+before_all do
+  ensure_git_branch(branch: 'main')
+  ensure_git_status_clean(ignored: 'none')
+  git_pull
+end
+
 platform :ios do
-  desc "Description of what the lane does"
-  lane :custom_lane do
-    # add actions here: https://docs.fastlane.tools/actions
+  private_lane :update_version do
+      app_store_version = get_app_store_version_number(bundle_id: 'oto-fastlane-circleci-test')
+      plist_version = get_version_number_from_plist(xcodeproj: 'app_demo.xcodeproj')
+      if Gem::Version.new(plist_version.to_f) == Gem::Version.new(app_store_version.to_f)
+          UI.message "bumping minor"
+          increment_version_number_in_plist(xcodeproj: 'app_demo.xcodeproj', bump_type: 'minor')
+      else
+          UI.message "bumping patch"
+          increment_version_number_in_plist(xcodeproj: 'app_demo.xcodeproj', bump_type: 'patch')
+      end
   end
+
+  private_lane :staging_build do
+      increment_build_number_in_plist(xcodeproj: 'app_demo.xcodeproj', target: 'app_demo')
+      gym(scheme: 'app_demo-staging', workspace: 'app_demo.xcworkspace')
+  end
+
+
+  lane :beta do
+      staging_build
+      upload_to_testflight(username: 'youremail@gmail.com', app_identifier: 'ReactNativeFastlane')
+      commit_version_bump(message: 'bump build')
+      push_to_git_remote
+  end
+
 end
