@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout
+      # Step 0: Checkout git repo
       - name: Checkout to git repository
         uses: actions/checkout@v3
 
@@ -42,25 +42,30 @@ jobs:
         env:
           CI: true
 
-      # Step 4: Setup ruby
-      # - uses: actions/checkout@v3
+      # Step 4: Run Jest Tests
+      - name: Run Jest tests
+        run: npm test
+        env:
+          CI: true
+
+      # Step 5: Setup ruby
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
 
-      # Step 5: Install bundler, and fastlane
+      # Step 6: Install bundler, and fastlane
       - name: Install Fastlane
         run: cd android && bundle install && cd ../
         env:
           CI: true
 
-      # Step 6: Install reactnative community pacakge manually
+      # Step 7: Install reactnative community pacakge manually
       - name: Add @react-native-community manually
         run: npm install @react-native-community/cli-platform-android@7.0.1
         env:
           CI: true
 
-      # Step 7: Decrypt keystore, generate keystore.properties, create Google Play API Key
+      # Step 8: Decrypt keystore, generate keystore.properties, create Google Play API Key
       - name: Decrypt keystore, generate keystore.properties, create Google Play API Key
         run: |
           cd android
@@ -70,7 +75,7 @@ jobs:
         env:
           CI: true
 
-      # Step 8: Fastlane test android
+      # Step 9: Fastlane test android
       - name: Fastlane TEST android
         run: |
           cd android
@@ -79,7 +84,7 @@ jobs:
           CI: true
           CD: true
 
-      # Step 9: Fastlane beta build android
+      # Step 10: Fastlane beta build android
       - name: Fastlane BETA android
         run: |
           cd android && bundle exec fastlane beta
@@ -87,7 +92,7 @@ jobs:
           CI: true
           CD: true
 
-      # Step 10: Delete Sensitive Files generated through CI/CD
+      # Step 11: Delete Sensitive Files generated through CI/CD
       - name: Delete sensitive files
         run: |
           cd android
