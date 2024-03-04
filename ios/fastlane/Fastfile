@@ -4,7 +4,7 @@ default_platform(:ios)
 
 before_all do
   ensure_git_branch(branch: 'main')
-  ensure_git_status_clean(ignored: 'none')
+  ensure_git_status_clean(ignored: 'traditional')
   git_pull
 end
 
