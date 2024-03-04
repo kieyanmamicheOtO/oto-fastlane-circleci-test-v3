@@ -1,4 +1,4 @@
-name: Create build for iOS and upload to Appstore - new test
+name: iOS Deployment
 on:
   push:
     branches: ['main']

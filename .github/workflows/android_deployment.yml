@@ -1,4 +1,4 @@
-name: Create build for Android and upload to Playstore
+name: Android Deployment
 on:
   push:
     branches: ['main']
