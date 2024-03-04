@@ -2,6 +2,7 @@ name: Create build for Android and upload to Playstore
 on:
   push:
     branches: ['main']
+jobs:
   build-prod-android:
     name: Build & ship android prod app
     runs-on: ubuntu-latest
