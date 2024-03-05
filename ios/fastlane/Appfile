@@ -1,4 +1,4 @@
-app_identifier("org.reactjs.native.example.app-demo") # The bundle identifier of your app
+app_identifier("oto-fastlane-circleci-test") # The bundle identifier of your app
 apple_id("kieyan.mamiche@otolawn.com") # Your Apple Developer Portal username
 
 itc_team_id("122124009") # App Store Connect Team ID
