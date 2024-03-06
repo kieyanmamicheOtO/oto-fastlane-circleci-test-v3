@@ -1,25 +1,31 @@
 # iOS Fastfile
 default_platform(:ios)
 
-
 before_all do
   ensure_git_branch(branch: 'main')
-  # git_pull
 end
 
 platform :ios do
 
-  private_lane :staging_build do
-      increment_build_number(xcodeproj: 'app_demo.xcodeproj')
-      gym(scheme: 'app_demo-staging', workspace: 'app_demo.xcworkspace', clean: 'true')
-  end
-
-
   lane :beta do
-      staging_build
-      # upload_to_testflight(username: 'youremail@gmail.com', app_identifier: 'ReactNativeFastlane')
-      # commit_version_bump(message: 'bump build')
-      # push_to_git_remote
+      increment_build_number(xcodeproj: 'app_demo.xcodeproj')
+      # xcode_select # Make sure to use the correct Xcode version
+      match(
+        type: "appstore",
+        app_identifier: "oto-fastlane-circleci-test",
+        git_url: "https://github.com/kieyanmamicheOtO/match-repo", # Update with your own Git repo
+      )
+      gym(
+        scheme: 'app_demo',
+        workspace: 'app_demo.xcworkspace',
+        clean: 'true',
+        export_method: "app-store",
+        export_options: {
+          uploadBitcode: false,
+          uploadSymbols: true,
+        }
+      )
+      upload_to_testflight
   end
 
 end
