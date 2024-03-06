@@ -1,20 +1,62 @@
 # iOS Fastfile
 default_platform(:ios)
 
+# Method to extract properties from a .properties file
+def extract_properties(file_path)
+  properties_hash = {}
+
+  # Read the file line by line
+  File.foreach(file_path) do |line|
+    # Skip comments and empty lines
+    next if line.strip.empty? || line.start_with?('#')
+
+    # Split each line by '=' to get key-value pairs
+    key, value = line.split('=')
+    properties_hash[key.strip] = value.strip
+  end
+
+  return properties_hash
+end
+
 before_all do
   ensure_git_branch(branch: 'main')
 end
 
 platform :ios do
+  
+  lane :t do
+    # Extract values needed from appstore_connect.properties
+    properties_hash = extract_properties('appstore_connect.properties')
+    
+    # Generate the App Store Connect Api Key
+    api_key = app_store_connect_api_key(
+      key_id: properties_hash['keyId'],
+      issuer_id: properties_hash['issuerId'],
+      key_filepath: properties_hash['keyFilePath'],
+      duration: 1200
+    )
+    
+    increment_build_number(xcodeproj: 'app_demo.xcodeproj')
+  end
+  
 
+  # Lane used for deploying the beta app to testflight
   lane :beta do
-      increment_build_number(xcodeproj: 'app_demo.xcodeproj')
+    
+      # Incement the build number of the iOS project
+      # increment_build_number(xcodeproj: 'app_demo.xcodeproj')
+      
+      # Command to select the correct XCode Version
       # xcode_select # Make sure to use the correct Xcode version
+      
+      # Command to sign app properly with the match appstore
       match(
         type: "appstore",
         app_identifier: "oto-fastlane-circleci-test",
-        git_url: "https://github.com/kieyanmamicheOtO/match-repo", # Update with your own Git repo
+        git_url: "https://github.com/kieyanmamicheOtO/match-repo",
       )
+      
+      # Build the app
       gym(
         scheme: 'app_demo',
         workspace: 'app_demo.xcworkspace',
@@ -25,7 +67,20 @@ platform :ios do
           uploadSymbols: true,
         }
       )
-      upload_to_testflight
+      
+      # Extract values needed from appstore_connect.properties
+      properties_hash = extract_properties('appstore_connect.properties')
+      
+      # Generate the App Store Connect Api Key
+      api_key = app_store_connect_api_key(
+        key_id: properties_hash['keyId'],
+        issuer_id: properties_hash['issuerId'],
+        key_filepath: properties_hash['keyFilePath'],
+        duration: 1200
+      )
+    
+      # Comamnd to deploy app to testflight
+      pilot(api_key: api_key)
   end
 
 end

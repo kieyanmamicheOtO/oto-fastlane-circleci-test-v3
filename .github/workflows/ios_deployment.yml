@@ -6,25 +6,61 @@ jobs:
   build-prod-ios:
     runs-on: macos-12
     steps:
+      # Step 0: Checkout git repo
       - uses: actions/checkout@v3
+
       # Step 1: Install Node Version 16
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 16
+
       # Step 2: Install Ruby
       - name: Install Ruby
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.7
+
       # Step 3: Install Node Modules
       - name: Install Node Modules
         run: npm install
         env:
           CI: true
 
-      # Step 6: Install Pods
+      # Step 4: Install Pods
       - name: Install pods
         run: cd ios && pod install --repo-update && cd ..
         env:
           CI: true
+
+      # Step 5: Install Fastlane
+      - name: Install Fastlane
+        run: bundle install && bundle update
+
+      # Step 6: Decrypt auth_key, generate appstore_connect.properties
+      - name: Decrypt auth_key, generate appstore_connect.properties
+        run: |
+          cd ios
+          ls -la fastlane
+          echo ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_BASE64 }} | base64 -d > ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_PATH }}
+          printf 'keyId=%s\nissuerId=%s\nkeyFilePath=%s' ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }} ${{ secrets.APPSTORE_CONNECT_API_ISSUER_ID }} ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_PATH }} > fastlane/appstore_connect.properties
+          ls -la fastlane
+        env:
+          CI: true
+
+      # Step 7: Run Fastlane to build and deploy build to testflight
+      - name: Build and upload to TestFlight
+        run: bundle exec fastlane beta
+        env:
+          CI: true
+          CD: true
+
+      # Step 8: Delete Sensitive Files generated through CI/CD
+      - name: Delete sensitive files
+        run: |
+          cd ios
+          rm ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_PATH }}
+          rm fastlane/appstore_connect.properties
+        env:
+          CI: true
+          CD: true
