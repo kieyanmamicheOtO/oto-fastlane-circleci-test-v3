@@ -35,7 +35,11 @@ jobs:
 
       # Step 5: Install Fastlane
       - name: Install Fastlane
-        run: bundle install && bundle update
+        run: |
+          cd ios 
+          bundle install
+          bundle update
+          cd ..
 
       # Step 6: Decrypt auth_key, generate appstore_connect.properties
       - name: Decrypt auth_key, generate appstore_connect.properties
