@@ -26,6 +26,11 @@ platform :android do
   lane :test do
     gradle(task: "test")
   end
+  
+  desc "Upgrade Android Version"
+  lane :upgrade_version do
+    increment_version_code
+  end
 
   desc "Submit a new Beta Build to internal testing"
   lane :beta do

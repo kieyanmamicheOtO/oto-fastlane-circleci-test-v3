@@ -73,17 +73,14 @@ jobs:
 
       # Step 9: Fastlane test android
       - name: Fastlane TEST android
-        run: |
-          cd android
-          bundle exec fastlane test
+        run: cd android && bundle exec fastlane test
         env:
           CI: true
           CD: true
 
       # Step 10: Fastlane beta build android
       - name: Fastlane BETA android
-        run: |
-          cd android && bundle exec fastlane beta
+        run: cd android && bundle exec fastlane beta
         env:
           CI: true
           CD: true

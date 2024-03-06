@@ -24,6 +24,11 @@ end
 
 platform :ios do
   
+  desc "Upgrade iOS Version"
+  lane :upgrade_version do
+    increment_build_number(xcodeproj: 'app_demo.xcodeproj')
+  end
+  
   lane :t do
     # Extract values needed from appstore_connect.properties
     properties_hash = extract_properties('appstore_connect.properties')

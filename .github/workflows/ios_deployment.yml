@@ -50,7 +50,7 @@ jobs:
 
       # Step 7: Run Fastlane to build and deploy build to testflight
       - name: Build and upload to TestFlight
-        run: bundle exec fastlane beta
+        run: cd ios && bundle exec fastlane beta
         env:
           CI: true
           CD: true
