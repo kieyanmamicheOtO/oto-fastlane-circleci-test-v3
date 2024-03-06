@@ -41,13 +41,13 @@ jobs:
           bundle update
           cd ..
 
-      # Step 6: Decrypt auth_key, generate appstore_connect.properties
-      - name: Decrypt auth_key, generate appstore_connect.properties
+      # Step 6: Decrypt auth_key and ios_fastlane.json
+      - name: Decrypt auth_key and ios_fastlane.json
         run: |
           cd ios
           ls -la fastlane
           echo ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_BASE64 }} | base64 -d > ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_PATH }}
-          printf 'keyId=%s\nissuerId=%s\nkeyFilePath=%s' ${{ secrets.APPSTORE_CONNECT_API_KEY_ID }} ${{ secrets.APPSTORE_CONNECT_API_ISSUER_ID }} ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_PATH }} > fastlane/appstore_connect.properties
+          echo ${{ secrets.IOS_FASTLANE_JSON_BASE64 }} | base64 -d > fastlane/ios_fastlane.json
           ls -la fastlane
         env:
           CI: true
@@ -64,7 +64,7 @@ jobs:
         run: |
           cd ios
           rm ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_PATH }}
-          rm fastlane/appstore_connect.properties
+          rm fastlane/ios_fastlane.json
         env:
           CI: true
           CD: true
