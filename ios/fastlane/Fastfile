@@ -39,8 +39,7 @@ platform :ios do
         app_identifier: "oto-fastlane-circleci-test",
         git_url: "https://github.com/kieyanmamicheOtO/match-repo",
         git_basic_authorization: data_hash['gitBasicAuthorization'],
-        readonly: true,
-        keychain_password: data_hash["matchPassword"]
+        readonly: true
       )
       
       # Build the app
