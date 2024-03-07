@@ -2,6 +2,8 @@
 default_platform(:ios)
 require 'json'
 
+TEMP_KEYCHAIN_PASSWORD = "oto-fastlane"
+
 before_all do
   ensure_git_branch(branch: 'main')
 end
@@ -32,7 +34,9 @@ platform :ios do
         type: "appstore",
         app_identifier: "oto-fastlane-circleci-test",
         git_url: "https://github.com/kieyanmamicheOtO/match-repo",
-        git_basic_authorization: data_hash['gitBasicAuthorization']
+        git_basic_authorization: data_hash['gitBasicAuthorization'],
+        readonly: true,
+        keychain_password: data_hash["matchPassword"]
       )
       
       # Build the app
