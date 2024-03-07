@@ -1,0 +1,5 @@
+desc 'Increment iOS and Android versions'
+lane :increment_version do
+    increment_version_code
+    increment_build_number(xcodeproj: 'ios/app_demo.xcodeproj')
+end

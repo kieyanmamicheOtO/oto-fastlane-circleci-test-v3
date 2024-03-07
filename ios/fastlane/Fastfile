@@ -15,6 +15,7 @@ platform :ios do
   
 
   # Lane used for deploying the beta app to testflight
+  desc "Deploy iOS app to testflight"
   lane :beta do
      
       # Extract values needed from ios_fastlane.json
