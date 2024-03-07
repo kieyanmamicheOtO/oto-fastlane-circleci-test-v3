@@ -64,8 +64,10 @@ jobs:
       - name: Delete sensitive files
         run: |
           cd ios
+          ls -la fastlane
           rm ${{ secrets.APPSTORE_CONNECT_API_KEY_FILE_PATH }}
           rm fastlane/ios_fastlane.json
+          ls -la fastlane
         env:
           CI: true
           CD: true

@@ -2,8 +2,6 @@
 default_platform(:ios)
 require 'json'
 
-TEMP_KEYCHAIN_PASSWORD = "oto-fastlane"
-
 before_all do
   ensure_git_branch(branch: 'main')
 end
@@ -18,12 +16,6 @@ platform :ios do
 
   # Lane used for deploying the beta app to testflight
   lane :beta do
-    
-      # Incement the build number of the iOS project
-      # increment_build_number(xcodeproj: 'app_demo.xcodeproj')
-      
-      # Command to select the correct XCode Version
-      # xcode_select # Make sure to use the correct Xcode version
      
       # Extract values needed from ios_fastlane.json
       json_data = File.read('ios_fastlane.json')
