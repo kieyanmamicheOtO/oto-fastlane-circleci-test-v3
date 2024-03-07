@@ -58,6 +58,7 @@ jobs:
         env:
           CI: true
           CD: true
+          MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
 
       # Step 8: Delete Sensitive Files generated through CI/CD
       - name: Delete sensitive files

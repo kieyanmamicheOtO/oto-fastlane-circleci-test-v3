@@ -28,6 +28,8 @@ platform :ios do
       # Extract values needed from ios_fastlane.json
       json_data = File.read('ios_fastlane.json')
       data_hash = JSON.parse(json_data)
+      
+      # keychain_password: data_hash["matchPassword"]
 
       # Command to sign app properly with the match appstore
       match(
@@ -36,7 +38,6 @@ platform :ios do
         git_url: "https://github.com/kieyanmamicheOtO/match-repo",
         git_basic_authorization: data_hash['gitBasicAuthorization'],
         readonly: true,
-        keychain_password: data_hash["matchPassword"]
       )
       
       # Build the app
