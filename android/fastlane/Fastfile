@@ -1,54 +1,41 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
+# Android Fastfile
 default_platform(:android)
 
+# Ensures that fastfile only runs on main
+before_all do
+  ensure_git_branch(branch: 'main')
+end
+
+# Specifying that Android is the platform for where dependencies/settings apply
 platform :android do
   
-  desc "Sets up project to be able to run necessary plugins"
-  lane :setup do
-    sh('echo | bundle exec fastlane add_plugin increment_version_code')
-  end
-  
+  # Lane used to run gradle tests
   desc "Runs all the tests"
   lane :test do
     gradle(task: "test")
   end
-  
-  desc "Upgrade Android Version"
-  lane :upgrade_version do
+
+  # Lane used to increment Android app version code
+  desc "Increment Android Version"
+  lane :increment_version do
     increment_version_code
   end
 
+  # Lane used to upload a new build to testflight
   desc "Submit a new Beta Build to internal testing"
   lane :beta do
-    # NOTE: increment_version_code doesn't work yet
+    
+    # Create a release bundle
     gradle(
       task: 'bundle',
       build_type: 'Release'
     )
+    
+    # Upload release bundle to testflight
     upload_to_play_store(
       track: 'internal',
       skip_upload_apk: true,
       release_status: 'draft'
     )
-  end
-
-  desc "Deploy a new version to the Google Play"
-  lane :deploy do
-    gradle(task: "clean assembleRelease")
-    upload_to_play_store
   end
 end

@@ -29,7 +29,7 @@ Upgrade iOS Version
 [bundle exec] fastlane ios beta
 ```
 
-
+Deploy iOS app to testflight
 
 ----
 

@@ -1,3 +1,12 @@
+# Root fastfile - fastlane usage for entire react project
+
+# Ensures that fastfile only runs on main
+before_all do
+    ensure_git_branch(branch: 'main')
+end
+
+# Lane to increment iOS and Android build numbers
+# NOTE: should be run before commit to successfully upload to testflight and playstore
 desc 'Increment iOS and Android versions'
 lane :increment_version do
     increment_version_code

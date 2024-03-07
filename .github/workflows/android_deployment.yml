@@ -6,19 +6,18 @@ jobs:
   build-prod-android:
     name: Build & ship android prod app
     runs-on: ubuntu-latest
-
     steps:
-      # Step 0: Checkout git repo
+      # Step 1: Checkout git repo
       - name: Checkout to git repository
         uses: actions/checkout@v3
 
-      # Step 1: Setup java and node
+      # Step 2: Setup java and node
       - name: Set up NODE
         uses: actions/setup-node@v3
         with:
           node-version: 16 # need 16 for rn
 
-      # Step 2: Configure gradel and gradle wrapper with cache
+      # Step 3: Configure gradel and gradle wrapper with cache
       - name: Cache Gradle Wrapper
         uses: actions/cache@v2
         with:
@@ -32,36 +31,36 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-caches-
 
-      # Step 3: Install node packages
+      # Step 4: Install node packages
       - name: Install node modules
         run: npm install
         env:
           CI: true
 
-      # Step 4: Run Jest Tests
+      # Step 5: Run Jest Tests
       - name: Run Jest tests
         run: npm test
         env:
           CI: true
 
-      # Step 5: Setup ruby
+      # Step 6: Setup ruby
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.7'
 
-      # Step 6: Install bundler, and fastlane
+      # Step 7: Install bundler, and fastlane
       - name: Install Fastlane
         run: cd android && bundle install && cd ../
         env:
           CI: true
 
-      # Step 7: Install reactnative community pacakge manually
+      # Step 8: Install reactnative community pacakge manually
       - name: Add @react-native-community manually
         run: npm install @react-native-community/cli-platform-android@7.0.1
         env:
           CI: true
 
-      # Step 8: Decrypt keystore, generate keystore.properties, create Google Play API Key
+      # Step 9: Decrypt keystore, generate keystore.properties, create Google Play API Key
       - name: Decrypt keystore, generate keystore.properties, create Google Play API Key
         run: |
           cd android
@@ -71,21 +70,21 @@ jobs:
         env:
           CI: true
 
-      # Step 9: Fastlane test android
+      # Step 10: Fastlane test android
       - name: Fastlane TEST android
         run: cd android && bundle exec fastlane test
         env:
           CI: true
           CD: true
 
-      # Step 10: Fastlane beta build android
+      # Step 11: Fastlane beta build android
       - name: Fastlane BETA android
         run: cd android && bundle exec fastlane beta
         env:
           CI: true
           CD: true
 
-      # Step 11: Delete Sensitive Files generated through CI/CD
+      # Step 12: Delete Sensitive Files generated through CI/CD
       - name: Delete sensitive files
         run: |
           cd android

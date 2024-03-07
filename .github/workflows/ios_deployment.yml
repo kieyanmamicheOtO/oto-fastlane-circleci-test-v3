@@ -4,36 +4,36 @@ on:
     branches: ['main']
 jobs:
   build-prod-ios:
-    runs-on: macos-12
+    runs-on: macos-latest
     steps:
-      # Step 0: Checkout git repo
+      # Step 1: Checkout git repo
       - uses: actions/checkout@v3
 
-      # Step 1: Install Node Version 16
+      # Step 2: Install Node Version 16
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
           node-version: 16
 
-      # Step 2: Install Ruby
+      # Step 3: Install Ruby
       - name: Install Ruby
         uses: actions/setup-ruby@v1
         with:
           ruby-version: 2.7
 
-      # Step 3: Install Node Modules
+      # Step 4: Install Node Modules
       - name: Install Node Modules
         run: npm install
         env:
           CI: true
 
-      # Step 4: Install Pods
+      # Step 5: Install Pods
       - name: Install pods
         run: cd ios && pod install --repo-update && cd ..
         env:
           CI: true
 
-      # Step 5: Install Fastlane
+      # Step 6: Install Fastlane
       - name: Install Fastlane
         run: |
           cd ios 
@@ -41,7 +41,7 @@ jobs:
           bundle update
           cd ..
 
-      # Step 6: Decrypt auth_key and ios_fastlane.json
+      # Step 7: Decrypt auth_key and ios_fastlane.json
       - name: Decrypt auth_key and ios_fastlane.json
         run: |
           cd ios
@@ -52,7 +52,7 @@ jobs:
         env:
           CI: true
 
-      # Step 7: Run Fastlane to build and deploy build to testflight
+      # Step 8: Run Fastlane to build and deploy build to testflight
       - name: Build and upload to TestFlight
         run: cd ios && bundle exec fastlane beta
         env:
@@ -60,7 +60,7 @@ jobs:
           CD: true
           MATCH_PASSWORD: '${{ secrets.MATCH_PASSWORD }}'
 
-      # Step 8: Delete Sensitive Files generated through CI/CD
+      # Step 9: Delete Sensitive Files generated through CI/CD
       - name: Delete sensitive files
         run: |
           cd ios

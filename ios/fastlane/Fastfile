@@ -2,18 +2,20 @@
 default_platform(:ios)
 require 'json'
 
+# Ensures that fastfile only runs on main
 before_all do
   ensure_git_branch(branch: 'main')
 end
 
+# Specifying that iOS is the platform for where dependencies/settings apply
 platform :ios do
   
-  desc "Upgrade iOS Version"
-  lane :upgrade_version do
+  # Lane used to increment iOS app version code
+  desc "Increment iOS Version"
+  lane :increment_version do
     increment_build_number(xcodeproj: 'app_demo.xcodeproj')
   end
   
-
   # Lane used for deploying the beta app to testflight
   desc "Deploy iOS app to testflight"
   lane :beta do
