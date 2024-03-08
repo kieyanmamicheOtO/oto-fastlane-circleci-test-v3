@@ -5,10 +5,9 @@ on:
       - main
 jobs:
   build-prod-ios:
-    if: ${{ contains(github.ref, '-release') }}
     runs-on: macos-latest
     steps:
-      # Step 1: Checkout git repo test
+      # Step 1: Checkout git repo
       - uses: actions/checkout@v3
 
       # Step 2: Install Node Version 16
