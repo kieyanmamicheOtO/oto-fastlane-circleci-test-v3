@@ -1,10 +1,10 @@
 name: iOS Deployment
 on:
-  # push:
+  push:
+    tags:
+      - 'v*'
   #   branches:
   #     - main
-  release:
-    types: [created] # testing
 jobs:
   build-prod-ios:
     if: ${{ contains(github.ref, '-release') }}
