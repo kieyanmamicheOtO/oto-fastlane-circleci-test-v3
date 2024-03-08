@@ -15,14 +15,6 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
-### android setup
-
-```sh
-[bundle exec] fastlane android setup
-```
-
-Sets up project to be able to run necessary plugins
-
 ### android test
 
 ```sh
@@ -31,14 +23,6 @@ Sets up project to be able to run necessary plugins
 
 Runs all the tests
 
-### android upgrade_version
-
-```sh
-[bundle exec] fastlane android upgrade_version
-```
-
-Upgrade Android Version
-
 ### android beta
 
 ```sh
@@ -46,14 +30,6 @@ Upgrade Android Version
 ```
 
 Submit a new Beta Build to internal testing
-
-### android deploy
-
-```sh
-[bundle exec] fastlane android deploy
-```
-
-Deploy a new version to the Google Play
 
 ----
 

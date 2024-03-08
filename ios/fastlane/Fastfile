@@ -1,6 +1,7 @@
 # iOS Fastfile
 default_platform(:ios)
 require 'json'
+require_relative '../../fastlane_helper_methods/date_transformer'
 
 # Ensures that fastfile only runs on main
 before_all do
@@ -10,12 +11,6 @@ end
 # Specifying that iOS is the platform for where dependencies/settings apply
 platform :ios do
   
-  # Lane used to increment iOS app version code
-  desc "Increment iOS Version"
-  lane :increment_version do
-    increment_build_number(xcodeproj: 'app_demo.xcodeproj')
-  end
-  
   # Lane used for deploying the beta app to testflight
   desc "Deploy iOS app to testflight"
   lane :beta do
@@ -24,9 +19,13 @@ platform :ios do
       json_data = File.read('ios_fastlane.json')
       data_hash = JSON.parse(json_data)
       
+      # Setup configuration to work on CI
       setup_ci(
         force: true
       )
+      
+      # Incrementing build number based on "%Y%m%d%H%M" - yyyymmddhhMM (where MM is minute and mm is month)
+      increment_build_number(xcodeproj: 'app_demo.xcodeproj', "build_number": transform_date_to_number)
 
       # Command to sign app properly with the match appstore
       match(

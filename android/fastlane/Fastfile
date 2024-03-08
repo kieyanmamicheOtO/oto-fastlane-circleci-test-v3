@@ -1,5 +1,6 @@
 # Android Fastfile
 default_platform(:android)
+require_relative '../../fastlane_helper_methods/date_transformer'
 
 # Ensures that fastfile only runs on main
 before_all do
@@ -15,15 +16,12 @@ platform :android do
     gradle(task: "test")
   end
 
-  # Lane used to increment Android app version code
-  desc "Increment Android Version"
-  lane :increment_version do
-    increment_version_code
-  end
-
   # Lane used to upload a new build to testflight
   desc "Submit a new Beta Build to internal testing"
   lane :beta do
+    
+    # Incrementing version code based on "%Y%m%d%H%M" - yyyymmddhhMM (where MM is minute and mm is month)
+    increment_version_code("version_code": transform_date_to_number)
     
     # Create a release bundle
     gradle(
