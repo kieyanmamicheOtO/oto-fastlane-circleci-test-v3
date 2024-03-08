@@ -2,7 +2,7 @@ name: iOS Deployment
 on:
   push:
     tags:
-      - 'v*'
+      - 'v**'
   #   branches:
   #     - main
 jobs:
@@ -10,7 +10,7 @@ jobs:
     if: ${{ contains(github.ref, '-release') }}
     runs-on: macos-latest
     steps:
-      # Step 1: Checkout git repo
+      # Step 1: Checkout git repo test
       - uses: actions/checkout@v3
 
       # Step 2: Install Node Version 16
