@@ -20,9 +20,7 @@ platform :ios do
       data_hash = JSON.parse(json_data)
       
       # Setup configuration to work on CI
-      setup_ci(
-        force: true
-      )
+      setup_ci if ENV['CI']
       
       # Incrementing build number based on "%Y%m%d%H%M" - yyyymmddhhMM (where MM is minute and mm is month)
       increment_build_number(xcodeproj: 'app_demo.xcodeproj', "build_number": use_date_to_generate_number)
@@ -57,7 +55,10 @@ platform :ios do
       )
     
       # Comamnd to deploy app to testflight
-      pilot(api_key: api_key)
+      pilot(
+        api_key: api_key,
+        skip_waiting_for_build_processing: true
+      )
   end
 
 end
