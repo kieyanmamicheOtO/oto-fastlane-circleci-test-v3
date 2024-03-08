@@ -1,10 +1,13 @@
 name: iOS Deployment
 on:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
+  release:
+    types: [created]
 jobs:
   build-prod-ios:
+    if: ${{ contains(github.ref, '-release') }}
     runs-on: macos-latest
     steps:
       # Step 1: Checkout git repo
