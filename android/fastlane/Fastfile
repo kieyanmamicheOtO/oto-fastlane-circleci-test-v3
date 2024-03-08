@@ -21,7 +21,7 @@ platform :android do
   lane :beta do
     
     # Incrementing version code based on "%Y%m%d%H%M" - yyyymmddhhMM (where MM is minute and mm is month)
-    increment_version_code("version_code": transform_date_to_number)
+    increment_version_code("version_code": use_date_to_generate_number)
     
     # Create a release bundle
     gradle(
