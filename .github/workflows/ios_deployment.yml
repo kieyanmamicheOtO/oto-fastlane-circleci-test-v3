@@ -2,7 +2,7 @@ name: iOS Deployment
 on:
   push:
     tags:
-      - 'v**'
+      - 'v*'
   #   branches:
   #     - main
 jobs:
