@@ -1,4 +1,23 @@
 {
   "name": "app_demo",
-  "displayName": "app_demo"
+  "displayName": "app_demo",
+  "expo": {
+    "name": "app_demo",
+    "slug": "app_demo",
+    "extra": {
+      "eas": {
+        "projectId": "5db91ac5-e1bb-4b1b-9e01-feb241837dc4"
+      }
+    },
+    "runtimeVersion": "1.0.0",
+    "updates": {
+      "url": "https://u.expo.dev/5db91ac5-e1bb-4b1b-9e01-feb241837dc4"
+    },
+    "ios": {
+      "bundleIdentifier": "oto-fastlane-circleci-test"
+    },
+    "android": {
+      "package": "com.app_demo"
+    }
+  }
 }
