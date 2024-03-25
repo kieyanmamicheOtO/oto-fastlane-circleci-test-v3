@@ -22,6 +22,13 @@ DerivedData
 *.xcuserstate
 ios/.xcode.env.local
 
+# New ignores
+*.p8
+*ios_fastlane.json
+*api.json
+*keystore.properties
+*dist
+
 # Android/IntelliJ
 #
 build/
