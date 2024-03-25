@@ -27,6 +27,7 @@ ios/.xcode.env.local
 *ios_fastlane.json
 *api.json
 *keystore.properties
+*dist
 
 # Android/IntelliJ
 #
